@@ -1,0 +1,43 @@
+---
+title: "Data605_Assignment2_PS2"
+author: "Ritesh Lohiya"
+date: "September 8, 2018"
+output: html_document
+---
+
+
+#Problem set 2:
+
+Matrix factorization is a very important problem. There are supercomputers built just to do matrix factorizations. Every second you are on an airplane, matrices are being factorized. Radars that track flights use a technique called Kalman filtering. At the heart of Kalman Filtering is a Matrix Factorization operation. Kalman Filters are solving linear systems of equations when they track your flight using radars. Write an R function to factorize a square matrix A into LU or LDU, whichever you prefer.
+
+```{r}
+my_func = function(M){
+  
+  if(dim(M)[1]!=dim(M)[2]){
+    return('Stop!! Not a square matrix')
+  }
+  
+   rows = columns = dim(M)[1]
+
+  U = M
+  L = D =  diag(rows)
+ 
+   for (j in 1:(columns-1)){
+       for (i in (j+1):rows){
+         L[i,j] = (U[i,j]/U[j,j])
+      U[i,] = U[i,]-(U[j,]*L[i,j])
+    }
+  }
+ 
+  diag(D) = diag(U)
+  for (l in 1:rows){
+    U[l,] = U[l,]/U[l,l]
+  }
+  
+  LDU = list(L,D,U)
+return(LDU)
+  
+}
+M = matrix(c(1,3,6,2,3,5,-1,7,-3),nrow=3,ncol = 3)
+my_func(M)
+```
